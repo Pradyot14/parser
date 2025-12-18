@@ -1,0 +1,24 @@
+from pycparser import c_parser, c_ast, parse_file
+
+# Parse a C file
+ast = parse_file('source_code/process_a.c', use_cpp=True)
+
+# Find all function definitions
+class FunctionVisitor(c_ast.NodeVisitor):
+    def visit_FuncDef(self, node):
+        print(f"Function: {node.decl.name}")
+        print(f"  Line: {node.coord.line}")
+        self.generic_visit(node)
+
+visitor = FunctionVisitor()
+visitor.visit(ast)
+```
+
+**Output:**
+```
+Function: main
+  Line: 10
+Function: process_request
+  Line: 25
+Function: validate_input
+  Line: 45
